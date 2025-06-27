@@ -1,8 +1,0 @@
-title: RAG Chatbot
-emoji: 🌖
-colorFrom: indigo
-colorTo: purple
-sdk: docker
-app_file: Dockerfile
-pinned: false
-license: apache-2.0
