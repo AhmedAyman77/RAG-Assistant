@@ -55,6 +55,7 @@ class GeminiProvider(LLMInterface):
 
         chat = model.start_chat(history=chat_history)
 
+
         response = chat.send_message(prompt)
 
         if not response or not response.text:

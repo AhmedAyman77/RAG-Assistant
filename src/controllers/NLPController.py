@@ -2,6 +2,7 @@ from .BaseController import BaseController
 from models.db_schemes import Project, DataChunk
 from stores.llm.LLMEnums import DocumentTypeEnum
 from typing import List
+from fastapi import Request
 import json
 
 class NLPController(BaseController):
@@ -88,9 +89,9 @@ class NLPController(BaseController):
 
         return results
     
-    def answer_rag_question(self, project: Project, query: str, limit: int = 10):
+    def answer_rag_question(self, request:Request, project: Project, query: str, limit: int = 10):
         
-        answer, full_prompt, chat_history = None, None, None
+        answer, full_prompt = None, None
 
         # step1: retrieve related documents
         retrieved_documents = self.search_vector_db_collection(
@@ -100,11 +101,8 @@ class NLPController(BaseController):
         )
 
         if not retrieved_documents or len(retrieved_documents) == 0:
-            return answer, full_prompt, chat_history
+            return answer, full_prompt, None
         
-        # step2: Construct LLM prompt
-        system_prompt = self.template_parser.get("rag", "system_prompt")
-
         documents_prompts = "\n".join([
             self.template_parser.get("rag", "document_prompt", {
                     "doc_num": idx + 1,
@@ -117,21 +115,29 @@ class NLPController(BaseController):
             "query": query
         })
 
-        # step3: Construct Generation Client Prompts
-        chat_history = [
-            self.generation_client.construct_prompt(
-                prompt=system_prompt,
-                role=self.generation_client.enums.SYSTEM.value,
-            )
-        ]
 
         full_prompt = "\n\n".join([documents_prompts,  footer_prompt])
 
         # step4: Retrieve the Answer
         answer = self.generation_client.generate_text(
             prompt=full_prompt,
-            chat_history=chat_history
+            chat_history=request.app.chat_history
         )
 
-        return answer, full_prompt, chat_history
+        # update history
+        request.app.chat_history.append(
+            self.generation_client.construct_prompt(
+                prompt=footer_prompt,
+                role=self.generation_client.enums.USER.value
+            )
+        )
+
+        request.app.chat_history.append(
+            self.generation_client.construct_prompt(
+                prompt=answer,
+                role=self.generation_client.enums.ASSISTANT.value
+            )
+        )
+
+        return answer, full_prompt, request.app.chat_history
 

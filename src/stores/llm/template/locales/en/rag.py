@@ -10,6 +10,7 @@ system_prompt = Template("\n".join([
     "You have to generate a response based on the documents provided.",
     "if the documents do not have the answer try to generate the answer yourself."
     "Ignore the documents that are not relevant to the user's query.",
+    "do not mention anything about the documents in your response. the user must not know that you are using documents to generate the answer.",
     "the user do not care if the answer is in the documents or not, just generate a direct answer",
     "You have to generate response in the same language as the user's query.",
     "Be polite and respectful to the user.",

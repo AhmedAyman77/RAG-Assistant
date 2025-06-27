@@ -37,6 +37,14 @@ async def startup_span():
         default_language=settings.DEFAULT_LANG,
     )
 
+    system_prompt = app.template_parser.get("rag", "system_prompt")
+    app.chat_history = [
+        app.generation_client.construct_prompt(
+            prompt=system_prompt,
+            role=app.generation_client.enums.SYSTEM.value,
+        )
+    ]
+
 @app.on_event("shutdown")
 async def shutdown_span():
     app.mongo_conn.close()

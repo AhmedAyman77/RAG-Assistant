@@ -168,7 +168,9 @@ async def answer_rag(request: Request, project_id: str, search_request: SearchRe
         template_parser=request.app.template_parser,
     )
 
+
     answer, full_prompt, chat_history = nlp_controller.answer_rag_question(
+        request=request,
         project=project,
         query=search_request.text,
         limit=search_request.limit,
