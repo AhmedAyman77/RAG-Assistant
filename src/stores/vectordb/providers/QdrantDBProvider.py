@@ -7,11 +7,11 @@ from models.db_schemes import RetrievedDocument
 
 class QdrantDBProvider(VectorDBInterface):
 
-    def __init__(self, db_path: str, distance_method: str):
+    def __init__(self, db_path:str, distance_method: str):
 
         self.client = None
-        self.db_path = db_path
         self.distance_method = None
+        self.db_path = db_path
 
         if distance_method == DistanceMethodEnums.COSINE.value:
             self.distance_method = models.Distance.COSINE
@@ -20,8 +20,22 @@ class QdrantDBProvider(VectorDBInterface):
 
         self.logger = logging.getLogger(__name__)
 
-    def connect(self):
-        self.client = QdrantClient(path=self.db_path)
+    def connect(self, config: dict):
+        QDRANT_HOST = config.QDRANT_HOST
+        QDRANT_API_KEY = config.QDRANT_API_KEY
+
+        if QDRANT_HOST and QDRANT_API_KEY:
+            self.client = QdrantClient(
+                url=QDRANT_HOST,
+                api_key=QDRANT_API_KEY,
+                timeout=60.0
+            )
+        
+        else:
+            self.client = QdrantClient(
+                path=self.db_path,
+                timeout=60.0
+            )
 
     def disconnect(self):
         self.client = None
@@ -59,8 +73,8 @@ class QdrantDBProvider(VectorDBInterface):
         return False
     
     def insert_one(self, collection_name: str, text: str, vector: list,
-                         metadata: dict = None, 
-                         record_id: str = None):
+                        metadata: dict = None, 
+                        record_id: str = None):
         
         if not self.is_collection_existed(collection_name):
             self.logger.error(f"Can not insert new record to non-existed collection: {collection_name}")
@@ -86,8 +100,8 @@ class QdrantDBProvider(VectorDBInterface):
         return True
     
     def insert_many(self, collection_name: str, texts: list, 
-                          vectors: list, metadata: list = None, 
-                          record_ids: list = None, batch_size: int = 50):
+                        vectors: list, metadata: list = None, 
+                        record_ids: list = None, batch_size: int = 50):
         
         if metadata is None:
             metadata = [None] * len(texts)

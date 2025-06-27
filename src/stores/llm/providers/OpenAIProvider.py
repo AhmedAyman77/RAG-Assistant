@@ -6,9 +6,9 @@ import logging
 class OpenAIProvider(LLMInterface):
 
     def __init__(self, api_key: str, api_url: str=None,
-                       default_input_max_characters: int=1000,
-                       default_generation_max_output_tokens: int=1000,
-                       default_generation_temperature: float=0.1):
+                        default_input_max_characters: int=1000,
+                        default_generation_max_output_tokens: int=1000,
+                        default_generation_temperature: float=0.1):
         
         self.api_key = api_key
         self.api_url = api_url
@@ -98,8 +98,3 @@ class OpenAIProvider(LLMInterface):
             "role": role,
             "content": self.process_text(prompt)
         }
-    
-
-
-    
-

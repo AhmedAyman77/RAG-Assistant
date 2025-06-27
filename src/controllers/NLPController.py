@@ -7,7 +7,7 @@ import json
 class NLPController(BaseController):
 
     def __init__(self, vectordb_client, generation_client, 
-                 embedding_client, template_parser):
+                embedding_client, template_parser):
         super().__init__()
 
         self.vectordb_client = vectordb_client
@@ -31,8 +31,8 @@ class NLPController(BaseController):
         )
     
     def index_into_vector_db(self, project: Project, chunks: List[DataChunk],
-                                   chunks_ids: List[int], 
-                                   do_reset: bool = False):
+                                chunks_ids: List[int], 
+                                do_reset: bool = False):
         
         # step1: get collection name
         collection_name = self.create_collection_name(project_id=project.project_id)
@@ -42,7 +42,7 @@ class NLPController(BaseController):
         metadata = [ c.chunk_metadata for c in  chunks]
         vectors = [
             self.embedding_client.embed_text(text=text, 
-                                             document_type=DocumentTypeEnum.DOCUMENT.value)
+                                            document_type=DocumentTypeEnum.DOCUMENT.value)
             for text in texts
         ]
 
@@ -71,7 +71,7 @@ class NLPController(BaseController):
 
         # step2: get text embedding vector
         vector = self.embedding_client.embed_text(text=text, 
-                                                 document_type=DocumentTypeEnum.QUERY.value)
+                                                document_type=DocumentTypeEnum.QUERY.value)
 
         if not vector or len(vector) == 0:
             return False
@@ -125,7 +125,7 @@ class NLPController(BaseController):
             )
         ]
 
-        full_prompt = "\n\n".join([ documents_prompts,  footer_prompt])
+        full_prompt = "\n\n".join([documents_prompts,  footer_prompt])
 
         # step4: Retrieve the Answer
         answer = self.generation_client.generate_text(
