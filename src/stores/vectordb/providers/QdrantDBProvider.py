@@ -24,18 +24,18 @@ class QdrantDBProvider(VectorDBInterface):
         QDRANT_HOST = config.QDRANT_HOST
         QDRANT_API_KEY = config.QDRANT_API_KEY
 
-        if QDRANT_HOST and QDRANT_API_KEY:
-            self.client = QdrantClient(
-                url=QDRANT_HOST,
-                api_key=QDRANT_API_KEY,
-                timeout=60.0
-            )
+        # if QDRANT_HOST and QDRANT_API_KEY:
+        self.client = QdrantClient(
+            url=QDRANT_HOST,
+            api_key=QDRANT_API_KEY
+        )
+        # print(self.client.collection_exists(collection_name="collection_1"))
         
-        else:
-            self.client = QdrantClient(
-                path=self.db_path,
-                timeout=60.0
-            )
+        # else:
+        #     print("%"*50)
+        #     self.client = QdrantClient(
+        #         path=self.db_path
+        #     )
 
     def disconnect(self):
         self.client = None
@@ -102,7 +102,6 @@ class QdrantDBProvider(VectorDBInterface):
     def insert_many(self, collection_name: str, texts: list, 
                         vectors: list, metadata: list = None, 
                         record_ids: list = None, batch_size: int = 50):
-        
         if metadata is None:
             metadata = [None] * len(texts)
 

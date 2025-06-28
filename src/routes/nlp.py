@@ -68,7 +68,6 @@ async def index_project(request: Request, project_id: str, push_request: PushReq
             do_reset=push_request.do_reset,
             chunks_ids=chunks_ids
         )
-
         if not is_inserted:
             return JSONResponse(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -78,6 +77,8 @@ async def index_project(request: Request, project_id: str, push_request: PushReq
             )
         
         inserted_items_count += len(page_chunks)
+
+        push_request.do_reset = 0
         
     return JSONResponse(
         content={
