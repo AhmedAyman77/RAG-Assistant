@@ -1,0 +1,71 @@
+<svg width="980" height="350" viewBox="0 0 980 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- User Query -->
+  <rect x="30" y="125" width="110" height="60" rx="15" fill="#E3F2FD" stroke="#1976D2" stroke-width="3"/>
+  <text x="85" y="150" text-anchor="middle" font-size="18" font-family="Verdana" fill="#1976D2" font-weight="bold">User</text>
+  <text x="85" y="168" text-anchor="middle" font-size="13" font-family="Verdana" fill="#444">Query</text>
+
+  <!-- Arrow: User Query to Retriever -->
+  <polygon points="140,155 170,155 170,165 140,165" fill="#1976D2"/>
+  <polygon points="170,155 180,160 170,165" fill="#1976D2"/>
+
+  <!-- Retriever -->
+  <rect x="180" y="100" width="150" height="110" rx="15" fill="#FFF9C4" stroke="#FBC02D" stroke-width="3"/>
+  <text x="255" y="130" text-anchor="middle" font-size="18" font-family="Verdana" fill="#B8860B" font-weight="bold">Retriever</text>
+  <text x="255" y="152" text-anchor="middle" font-size="13" font-family="Verdana" fill="#666">(Embeds & searches</text>
+  <text x="255" y="168" text-anchor="middle" font-size="13" font-family="Verdana" fill="#666">in Vector DB)</text>
+  <text x="255" y="190" text-anchor="middle" font-size="12" font-family="Verdana" fill="#444">Finds relevant chunks</text>
+
+  <!-- Arrow: Retriever to Vector DB -->
+  <polygon points="255,210 255,240 265,240 245,240" fill="#FBC02D"/>
+  <polygon points="255,240 260,248 265,240" fill="#FBC02D"/>
+
+  <!-- Vector DB -->
+  <rect x="205" y="240" width="100" height="55" rx="12" fill="#F0F4C3" stroke="#AFB42B" stroke-width="2"/>
+  <text x="255" y="265" text-anchor="middle" font-size="16" font-family="Verdana" fill="#827717" font-weight="bold">Vector DB</text>
+  <text x="255" y="285" text-anchor="middle" font-size="12" font-family="Verdana" fill="#666">Qdrant / Pinecone</text>
+
+  <!-- Arrow: Vector DB to Retriever (up) -->
+  <polygon points="255,295 255,215 265,215 245,215" fill="#AFB42B"/>
+  <polygon points="255,215 250,207 245,215" fill="#AFB42B"/>
+
+  <!-- Arrow: Retriever to Generator (LLM) -->
+  <polygon points="330,155 390,155 390,165 330,165" fill="#388E3C"/>
+  <polygon points="390,155 400,160 390,165" fill="#388E3C"/>
+  <text x="360" y="150" text-anchor="middle" font-size="12" font-family="Verdana" fill="#388E3C">Relevant Chunks</text>
+
+  <!-- Generator (LLM) -->
+  <rect x="400" y="95" width="240" height="120" rx="18" fill="#F3E5F5" stroke="#8E24AA" stroke-width="3"/>
+  <text x="520" y="125" text-anchor="middle" font-size="18" font-family="Verdana" fill="#8E24AA" font-weight="bold">Generator (LLM)</text>
+  <text x="520" y="146" text-anchor="middle" font-size="13" font-family="Verdana" fill="#444">Receives user query + retrieved chunks</text>
+  <text x="520" y="168" text-anchor="middle" font-size="13" font-family="Verdana" fill="#444">Synthesizes answer</text>
+  <text x="520" y="188" text-anchor="middle" font-size="13" font-family="Verdana" fill="#666">OpenAI | Gemini | Cohere</text>
+
+  <!-- Arrow: Generator to Answer -->
+  <polygon points="640,155 700,155 700,165 640,165" fill="#1976D2"/>
+  <polygon points="700,155 710,160 700,165" fill="#1976D2"/>
+
+  <!-- Generated Answer -->
+  <rect x="710" y="125" width="200" height="60" rx="15" fill="#E8F5E9" stroke="#388E3C" stroke-width="3"/>
+  <text x="810" y="150" text-anchor="middle" font-size="18" font-family="Verdana" fill="#388E3C" font-weight="bold">Generated Answer</text>
+  <text x="810" y="170" text-anchor="middle" font-size="13" font-family="Verdana" fill="#444">Response to User</text>
+
+  <!-- Feedback Arrow - Dashed -->
+  <line x1="900" y1="190" x2="80" y2="190" stroke="#aaa" stroke-width="2" stroke-dasharray="6,5" marker-end="url(#arrowhead)"/>
+  <text x="490" y="210" text-anchor="middle" font-size="12" font-family="Verdana" fill="#aaa">User Feedback (optional)</text>
+
+  <!-- User/Document DB (optional) -->
+  <rect x="30" y="245" width="110" height="55" rx="12" fill="#F5F5F5" stroke="#90A4AE" stroke-width="2"/>
+  <text x="85" y="275" text-anchor="middle" font-size="14" font-family="Verdana" fill="#607D8B" font-weight="bold">Docs/KB</text>
+  <text x="85" y="292" text-anchor="middle" font-size="12" font-family="Verdana" fill="#888">Your corpus</text>
+
+  <!-- Arrow: Docs to Retriever -->
+  <polygon points="140,265 180,155" fill="#90A4AE"/>
+  <line x1="140" y1="265" x2="200" y2="155" stroke="#90A4AE" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Arrowhead marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#aaa"/>
+    </marker>
+  </defs>
+</svg>

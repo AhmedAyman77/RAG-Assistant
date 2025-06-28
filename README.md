@@ -1,53 +1,210 @@
-# RAG-Assistant
+# Table of Contents
 
-RAG-Assistant is a minimal and extensible implementation of a Retrieval-Augmented Generation (RAG) system for question answering. It utilizes vector databases and large language models (LLMs) to retrieve relevant information from indexed documents and generate concise, context-aware responses to user queries.
+1. [Overview](#overview)
+2. [What is Retrieval-Augmented Generation (RAG)?](#what-is-retrieval-augmented-generation-rag)
+3. [Project Structure](#project-structure)
+4. [Features](#features)
+5. [Requirements](#requirements)
+6. [Installation](#installation)
+7. [API Overview](#api-overview)
+8. [Usage Guide](#usage-guide)
+    - [Uploading Documents](#uploading-documents)
+    - [Splitting Documents](#splitting-documents)
+    - [Indexing Documents](#indexing-documents)
+    - [Retrieving Index Information](#retrieving-index-information)
+    - [Searching & Retrieval](#searching--retrieval)
+    - [Answer Generation](#answer-generation)
+9. [Customization](#customization)
+10. [License](#license)
+11. [Contact](#contact)
+
+
+
+# RAG-Assistant – Project Documentation
+
+## Overview
+
+**RAG-Assistant** is a minimal and extensible Retrieval-Augmented Generation (RAG) system for intelligent question answering. It combines vector database retrieval with large language models (LLMs) to generate answers based on your own document collections.
+
+
+
+# What is Retrieval-Augmented Generation (RAG)?
+
+Retrieval-Augmented Generation (RAG) is a modern artificial intelligence (AI) paradigm that enhances the capabilities of large language models (LLMs) by integrating information retrieval mechanisms. This approach combines the strengths of two AI fields:
+- **Information Retrieval** (search engines, vector databases, etc.)
+- **Natural Language Generation** (LLMs such as GPT, Gemini, Cohere, etc.)
+
+The result is a system that can generate more accurate, up-to-date, and contextually relevant answers, even about topics outside of the LLM’s static training data.
+
+
+
+## Why Use RAG?
+
+Traditional LLMs are limited to the data they were trained on and cannot access new or private information. RAG overcomes this by:
+- **Accessing private, custom, or updated knowledge bases** (e.g., your company documents, research papers, or recent news).
+- **Improving factual accuracy** by grounding responses in retrievable evidence.
+- **Supporting explainability** by showing retrieved sources alongside answers.
+
+
+
+## How Does RAG Work?
+
+RAG architecture typically consists of two main components:
+
+### 1. Retriever
+
+The retriever’s job is to find relevant pieces of information (“chunks”) from a large collection of documents or knowledge base. This is often done using a **vector database** (like Qdrant, Pinecone, Weaviate, etc.), which enables efficient similarity search based on embeddings.
+
+**Steps:**
+- The user submits a query.
+- The retriever encodes the query into a vector and retrieves the most relevant document chunks from the database.
+
+### 2. Generator
+
+The generator (an LLM) takes both the user’s original query and the retrieved context, then generates a coherent, context-aware response.
+
+**Steps:**
+- The LLM receives the user query and the retrieved chunks as context.
+- It synthesizes an answer, often referencing or quoting the retrieved sources.
+
+
+
+## RAG Architecture Diagram
+
+Below is a high-level workflow of a RAG system:
+
+```
+User Query
+    │
+    ▼
+Retriever (Vector DB Search)
+    │
+    ▼
+Relevant Chunks (Context)
+    │
+    ▼
+Generator (LLM)
+    │
+    ▼
+Generated Answer
+```
+
+![RAG Architecture Example](images/RAG_workflow.png)
+
+## Example Workflow
+
+1. **User asks:** “What are the main benefits of RAG systems?”
+2. **Retriever** searches a document collection for relevant passages.
+3. **Generator** (LLM) receives both the question and retrieved passages, then generates a synthesized answer:
+   > “RAG systems improve factual accuracy, enable up-to-date knowledge integration, and provide explainable, source-grounded responses.”
+
+
+## Key Benefits
+
+- **Accuracy:** Answers are grounded in real sources, reducing hallucinations.
+- **Freshness:** Can access new or updated content unavailable during LLM training.
+- **Customization:** Easily adapt to company documents, personal notes, or domain-specific knowledge.
+- **Explainability:** Can show which sources were used to form the answer.
+
+
+## Real-World Applications
+
+- **Enterprise search assistants** (internal knowledge bases, support bots)
+- **Scientific and legal research tools**
+- **Customer service chatbots**
+- **Educational tutors using up-to-date content**
+
+
+## RAG in the RAG-Assistant Project
+
+In this repository, RAG-Assistant provides:
+- Document upload and chunking
+- Efficient indexing and retrieval (via Qdrant)
+- LLM-based answer generation using retrieved context
+- API endpoints for every stage, enabling easy integration and extension
+
+
+
+*Retrieval-Augmented Generation (RAG) is transforming the way AI systems interact with knowledge, making them more reliable, adaptable, and useful for real-world tasks.*
+
+
+## Project Structure
+
+The project follows a modular structure, separating concerns for scalability and maintainability.
+
+```
+RAG-Assistant/
+│
+├── docker/                       # Docker configuration files
+├── images/                       # Images for documentation and UI
+├── src/
+│   ├── assets/                   # Uploaded files and assets
+│   ├── controllers/              # Business logic and feature controllers
+│   ├── helpers/                  # Utility functions and configuration
+│   ├── models/                   # Data models (MongoDB, vector DB, etc.)
+│   ├── routes/                   # FastAPI routes (API endpoints)
+│   └── stores/
+│       └── llm/                  # LLM-related code (providers, templates)
+|       └── vectordb/             # VectorDB code (QdrantDB)
+│
+├── .env.example                  # Example environment configuration
+├── requirements.txt              # Python dependencies
+├── README.md                     # Project readme
+└── main.py                       # FastAPI app entrypoint
+```
+
 
 ## Features
 
-- **Retrieval-Augmented Generation (RAG):** Seamlessly integrates information retrieval via a vector database with generative capabilities of LLMs for accurate answers.
-- **FastAPI Backend:** Offers a RESTful API for uploading, indexing, searching, and answering queries using project-specific document sets.
-- **Multi-language Support:** Includes prompt templates in both English and Arabic, enabling multi-lingual queries and responses.
-- **Flexible Vector Database Integration:** Index and search custom documents using embeddings and vector search capabilities.
-- **LLM Agnostic:** Easily configurable with multiple LLM providers (OpenAI, Cohere, Gemini) for text generation.
-- **Dockerized Deployment:** Ready-to-use Docker Compose setup for effortless deployment locally or in the cloud.
-- **Configurable Environment:** Manage all keys and settings securely using `.env` files.
+- **Retrieval-Augmented Generation (RAG):** Integrates vector-based retrieval with generative LLMs for precise, context-rich answers.
+- **FastAPI Backend:** RESTful API for document upload, indexing, search, and question answering.
+- **Multi-language Support:** English & Arabic prompt templates for multilingual queries and responses.
+- **Flexible Vector Database Integration:** Easily index/search custom documents using embeddings and vector similarity search (Qdrant by default).
+- **Pluggable LLM Providers:** Supports OpenAI, Cohere, and Gemini out of the box.
+- **Dockerized Deployment:** Docker Compose configuration for local and cloud environments.
+- **Environment-based Configuration:** `.env` files centralize and secure API keys and settings.
+
+
 
 ## Requirements
 
 - Python 3.10 or higher
-- Docker (optional, required for containerized deployment and MongoDB usage)
-- API key for your chosen LLM provider (e.g., OpenAI)
+- Docker (optional, for containerized deployment)
+- API key for your LLM provider (e.g., OpenAI, Cohere, Gemini)
+
+
 
 ## Installation
 
-### 1. Install Python Dependencies
+1. **Install Python Dependencies**
 
-```bash
-pip install -r requirements.txt
-```
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-### 2. Configure Environment Variables
+2. **Configure Environment Variables**
 
-Copy the environment template and update credentials:
-```bash
-cp .env.example .env
-# Edit .env to provide your LLM/API keys and database settings
-```
+    ```bash
+    cp .env.example .env
+    # Edit .env to provide your LLM/API keys and database settings
+    ```
 
-### 3. Launch with Docker Compose (Optional, if MongoDB is not already available)
+3. **Launch with Docker Compose (if MongoDB is not already available)**
 
-```bash
-cd docker
-cp .env.example .env
-# Edit docker/.env with your configuration
-sudo docker compose up -d
-```
+    ```bash
+    cd docker
+    cp .env.example .env
+    # Edit docker/.env for your environment
+    sudo docker compose up -d
+    ```
 
-### 4. Start the FastAPI Server
+4. **Start the FastAPI Server**
 
-```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 5000
-```
+    ```bash
+    uvicorn main:app --reload --host 0.0.0.0 --port 5000
+    ```
+
+
 
 ## API Overview
 
@@ -59,63 +216,90 @@ uvicorn main:app --reload --host 0.0.0.0 --port 5000
 - `POST /api/v1/nlp/index/search/{project_id}`: Search for relevant chunks in the vector database.
 - `POST /api/v1/nlp/index/answer/{project_id}`: Obtain an answer to a question using the RAG pipeline.
 
+
+
 ## Usage Guide
 
-### **Uploading Documents (Text/PDF)**
-- Use the `/api/v1/data/upload/{project_id}` endpoint to store documents in the path: `/src/assets/files/(project_id)/(document_unique_name)`.
-- All relevant documents can be grouped under a single project.
-#### **Example**    
-![](/images/UPLOAD.png)
+### Uploading Documents
 
-### **Splitting Document Content**
-- Use the `/api/v1/data/process/{project_id}` endpoint to split documents and store the resulting chunks in MongoDB.
-- Parameters:
-    1. **file_id:** Specify to process a particular document, or leave blank to process all documents in the project.
-    2. **chunk_size:** Number of characters in each chunk.
-    3. **overlap_size:** Number of overlapping characters between consecutive chunks.
-    4. **do_reset:** Remove all existing chunks for this project in MongoDB.
-#### **Example**    
-![](/images/PROCESS.png)
+Use `/api/v1/data/upload/{project_id}` to upload your documents (PDF or text). All files are organized by project for easy management.
 
-### **Indexing Documents**
-- Index your document chunks into the vector database (Qdrant) using the `/api/v1/nlp/index/push/{project_id}` endpoint.
-- Parameters:
-    1. **do_reset:** If true, removes all current data from QdrantDB before indexing.
-#### **Example**    
-![](/images/PUSH.png)
+![Upload Example](images/UPLOAD.png)
 
-### **Retrieving Index Information**
-- Use `/api/v1/nlp/index/info/{project_id}` to obtain details about all chunks in a project.
-#### **Example**    
-![](/images/INFO.png)
 
-### **Searching & Retrieval**
-- Use `/api/v1/nlp/index/search/{project_id}` to search for relevant chunks in QdrantDB.
-- Parameters:
-    1. **text:** User query.
-    2. **limit:** Number of related chunks to return in the response.
-#### **Example**    
-![](/images/SEARCH.png)
 
-### **Answer Generation**
-- The LLM generates answers based on the constructed prompt, optionally preserving chat history for context.
-- Use `/api/v1/nlp/index/answer/{project_id}` to interact with the LLM.
-    1. **text:** User query.
-    2. **limit:** Number of relevant chunks to provide to the LLM.
-#### **Example**    
-![](/images/ANSWER.png)
+### Splitting Documents
+
+Use `/api/v1/data/process/{project_id}` to split documents into manageable chunks for indexing and retrieval.
+
+**Parameters:**
+- `file_id`: (optional) Process a specific document, or all documents in the project
+- `chunk_size`: Number of characters per chunk
+- `overlap_size`: Number of overlapping characters between chunks
+- `do_reset`: Remove all existing chunks for this project in MongoDB
+
+![Process Example](images/PROCESS.png)
+
+
+
+### Indexing Documents
+
+Index your processed chunks into the vector database using `/api/v1/nlp/index/push/{project_id}`.
+
+**Parameters:**
+- `do_reset`: (optional) Remove all current data from QdrantDB
+
+![Index Example](images/PUSH.png)
+
+
+
+### Retrieving Index Information
+
+Use `/api/v1/nlp/index/info/{project_id}` to view all indexed chunks for a project.
+
+![Info Example](images/INFO.png)
+
+
+
+### Searching & Retrieval
+
+Search for the most relevant document chunks with `/api/v1/nlp/index/search/{project_id}`.
+
+**Parameters:**
+- `text`: User query
+- `limit`: Number of related chunks to return
+
+![Search Example](images/SEARCH.png)
+
+
+
+### Answer Generation
+
+Get context-aware answers from the LLM with `/api/v1/nlp/index/answer/{project_id}`.
+
+**Parameters:**
+- `text`: User query
+- `limit`: Number of relevant chunks to provide to the LLM
+
+![Answer Example](images/ANSWER.png)
+
+
 
 ## Customization
 
-- **Prompt Templates:** Located in `src/stores/llm/template/locales/` (English & Arabic).
-- **LLM Providers:** Easily extend or switch LLM providers (Gemini, OpenAI, Cohere) in `src/stores/llm/providers/`.
-- **Vector Database:** Swap or extend the vector database backend as needed.
+- **Prompt Templates:** Located in `src/stores/llm/template/locales/` for English & Arabic.
+- **LLM Providers:** Extend or switch providers (Gemini, OpenAI, Cohere) in `src/stores/llm/providers/`.
+- **Vector Database:** Swap or extend the vector DB backend as needed.
+
+
 
 ## License
 
 [Apache License 2.0](LICENSE)
 
+
+
 ## Contact
 
-- [LinkedIn Profile](https://www.linkedin.com/in/ahmed-ayman-25a9b2248/)
+- [LinkedIn](https://www.linkedin.com/in/ahmed-ayman-25a9b2248/)
 - [Gmail](mailto:ai388981@gmail.com)
