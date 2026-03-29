@@ -3,8 +3,6 @@ name: Deploy RAG to HuggingFace
 on:
   push:
     branches: [HF-deploy]
-    paths:
-      - 'RAG-Assistant-main/**'
 
 jobs:
   deploy:
