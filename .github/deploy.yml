@@ -1,0 +1,33 @@
+name: Deploy RAG to HuggingFace
+
+on:
+  push:
+    branches: [HF-deploy]
+    paths:
+      - 'RAG-Assistant-main/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Push to HuggingFace Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git config --global user.email "ci@github.com"
+          git config --global user.name "GitHub CI"
+
+          git clone https://A7medAyman:$HF_TOKEN@huggingface.co/spaces/A7medAyman/RAG hf_space
+
+          cp -r RAG-Assistant-main/src/. hf_space/
+
+          cd hf_space
+          git add .
+          git diff --cached --quiet || (git commit -m "Deploy from GitHub: ${{ github.sha }}" && git push)
