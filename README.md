@@ -302,4 +302,4 @@ Get context-aware answers from the LLM with `/api/v1/nlp/index/answer/{project_i
 ## Contact
 
 - [LinkedIn](https://www.linkedin.com/in/ahmed-ayman-25a9b2248/)
-- [Gmail](mailto:ai388981@gmail.com)
+- [Gmail](mailto:devahmedaymn@gmail.com)
