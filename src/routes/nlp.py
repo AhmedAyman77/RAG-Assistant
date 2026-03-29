@@ -17,7 +17,6 @@ nlp_router = APIRouter(
 
 @nlp_router.post("/index/push/{project_id}")
 async def index_project(request: Request, project_id: str, push_request: PushRequest):
-
     project_model = await ProjectModel.create_instance(
         db_client=request.app.db_client
     )
